@@ -32,13 +32,27 @@ Estándares de código para proyectos Vue 3 + DevExtreme. Estas reglas están ta
 
 ---
 
-## Instalación del skill
+## Instalación
+
+### 1. MCP de DevExtreme (una sola vez, global)
 
 ```bash
 claude mcp add --scope user --transport http dxdocs https://api.devexpress.com/mcp/docs
 ```
 
-Luego instalar el skill `vue3-devextreme` en Claude Code apuntando a `vue3-devextreme/SKILL.md`.
+### 2. Skill `vue3-devextreme` desde GitHub
+
+Dentro del proyecto donde querés usarlo:
+
+```bash
+claude skills add JulioGastonPita/devextreme-vue-skill --skill-path vue3-devextreme/SKILL.md
+```
+
+### 3. Actualizar a la última versión
+
+```bash
+claude skills update vue3-devextreme
+```
 
 ---
 
