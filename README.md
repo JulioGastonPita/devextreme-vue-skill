@@ -6,13 +6,25 @@ Colección de skills y reglas de desarrollo para proyectos **Vue 3 + DevExtreme*
 
 ## Instalación
 
-### 1. MCP de DevExtreme (una sola vez, global)
+### Opción A — Script automático (recomendado)
+
+Desde la raíz del proyecto donde querés usar el skill, ejecutar en PowerShell:
+
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/JulioGastonPita/devextreme-vue-skill/master/install.ps1" -OutFile "install.ps1"; .\install.ps1
+```
+
+El script instala el MCP de DevExtreme (global) y el skill (proyecto actual). Si ya están instalados, actualiza el skill a la última versión.
+
+### Opción B — Manual
+
+**1. MCP de DevExtreme (una sola vez, global)**
 
 ```bash
 claude mcp add --scope user --transport http dxdocs https://api.devexpress.com/mcp/docs
 ```
 
-### 2. Skill `vue3-devextreme` desde GitHub
+**2. Skill `vue3-devextreme` desde GitHub**
 
 Dentro del proyecto donde querés usarlo:
 
@@ -20,7 +32,7 @@ Dentro del proyecto donde querés usarlo:
 claude skills add JulioGastonPita/devextreme-vue-skill --skill-path vue3-devextreme/SKILL.md
 ```
 
-### 3. Actualizar a la última versión
+**3. Actualizar a la última versión**
 
 ```bash
 claude skills update vue3-devextreme
