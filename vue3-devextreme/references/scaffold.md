@@ -34,10 +34,12 @@ cd <project-name>
 ## Paso 2 — Instalar dependencias
 
 ```bash
-npm install devextreme devextreme-vue
+npm install devextreme@25.2 devextreme-vue@25.2 --save-exact
 npm install @tanstack/vue-query
 npm install axios
 ```
+
+> **Por qué `--save-exact`**: DevExtreme **no usa Semantic Versioning**. Una actualización de patch puede introducir cambios de comportamiento. Pinear la versión exacta evita actualizaciones automáticas inesperadas.
 
 ---
 
@@ -305,6 +307,11 @@ const drawerOpen  = ref(true)
       <template #navigation>
         <AppMenu />
       </template>
+      <!--
+        IMPORTANTE: DxDrawer no soporta contenido dinámico en el elemento raíz.
+        <RouterView /> DEBE estar envuelto en un <div> estático — nunca directo como hijo de DxDrawer.
+        Ver: https://js.devexpress.com/Vue/Documentation/Guide/Vue_Components/Component_Configuration_Syntax/
+      -->
       <div class="app-content">
         <RouterView />
       </div>

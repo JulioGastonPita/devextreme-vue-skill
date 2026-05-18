@@ -331,3 +331,77 @@ No re-importar ni re-configurar el locale dentro de componentes.
 ```
 
 Usar siempre `:deferred-rendering="true"` en tabs con contenido pesado.
+
+---
+
+## Validación de formularios complejos — DxValidationGroup
+
+Cuando un form tiene múltiples secciones o se necesita validar todo antes de guardar, usar `DxValidationGroup`:
+
+```vue
+<script setup lang="ts">
+import { DxValidationGroup }   from 'devextreme-vue/validation-group'
+import { DxValidationSummary } from 'devextreme-vue/validation-summary'
+import { DxButton }            from 'devextreme-vue/button'
+import type { ClickEvent }     from 'devextreme/ui/button'
+
+const validationGroupRef = ref<InstanceType<typeof DxValidationGroup> | null>(null)
+
+function handleSave(e: ClickEvent) {
+  const result = validationGroupRef.value?.instance?.validate()
+  if (!result?.isValid) return   // DxValidationSummary muestra los errores
+  // proceder con el guardado
+}
+</script>
+
+<template>
+  <DxValidationGroup ref="validationGroupRef">
+    <DxForm :form-data="formData" label-mode="floating" :col-count="2">
+      <DxSimpleItem data-field="name">
+        <DxRequiredRule />
+      </DxSimpleItem>
+      <!-- resto de campos -->
+    </DxForm>
+    <DxValidationSummary />
+    <DxButton text="Guardar" type="default" @click="handleSave" />
+  </DxValidationGroup>
+</template>
+```
+
+- Usar `DxValidationGroup` cuando el form tiene múltiples secciones o se valida mediante un botón externo
+- `DxValidationSummary` muestra la lista de errores de validación en un solo lugar
+- Para forms simples dentro de `DxPopup` con un solo grupo de campos, las `DxRequiredRule` inline son suficientes
+
+---
+
+## Celdas custom en DxDataGrid — named slots
+
+Para personalizar el render de una celda, usar el named slot `#cell-template`:
+
+```vue
+<DxColumn data-field="status" caption="Estado">
+  <template #cell-template="{ data }">
+    <span :class="`badge badge-${data.value}`">{{ data.displayValue }}</span>
+  </template>
+</DxColumn>
+```
+
+Para celdas de edición custom, usar `#edit-cell-template`:
+
+```vue
+<DxColumn data-field="categoryId" caption="Categoría">
+  <template #edit-cell-template="{ data }">
+    <DxSelectBox
+      :value="data.value"
+      :data-source="categories"
+      value-expr="id"
+      display-expr="name"
+      @value-changed="e => data.setValue(e.value)"
+    />
+  </template>
+</DxColumn>
+```
+
+- `data.value` → valor actual de la celda
+- `data.displayValue` → valor formateado para mostrar
+- `data.setValue(v)` → actualiza el valor en edición inline
