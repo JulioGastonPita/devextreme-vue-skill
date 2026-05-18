@@ -101,6 +101,21 @@ interface ImportMeta {
 
 ## Paso 5 — Archivos fuente
 
+### `index.html` — agregar clase `dx-viewport` al body
+
+Abrir el `index.html` generado por Vite en la raíz del proyecto y agregar la clase al `<body>`:
+
+```html
+<body class="dx-viewport">
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+```
+
+> `dx-viewport` activa el sistema de theming de DevExtreme para **todos** los elementos de la página, incluyendo los que están fuera de componentes Vue. Sin esta clase, algunos estilos globales (fuentes, colores de fondo, scrollbars) pueden no aplicarse correctamente.
+
+---
+
 ### `src/main.ts`
 ```typescript
 import { createApp } from 'vue'
