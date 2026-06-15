@@ -36,12 +36,12 @@ if ($mcpList -match $MCP_NAME) {
     Write-Host "      Ya instalado — sin cambios." -ForegroundColor Green
 } else {
     Write-Host "      Instalando '$MCP_NAME'..."
-    claude mcp add --scope user --transport http $MCP_NAME $MCP_URL 2>&1
+    claude mcp add --scope project --transport http $MCP_NAME $MCP_URL 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "      Instalado correctamente." -ForegroundColor Green
     } else {
         Write-Host "      Error al instalar el MCP. Verificar manualmente:" -ForegroundColor Red
-        Write-Host "      claude mcp add --scope user --transport http $MCP_NAME $MCP_URL" -ForegroundColor Gray
+        Write-Host "      claude mcp add --scope project --transport http $MCP_NAME $MCP_URL" -ForegroundColor Gray
     }
 }
 
