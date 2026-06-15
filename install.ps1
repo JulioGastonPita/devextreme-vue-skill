@@ -14,10 +14,10 @@ $RULES_FILES = @("code-quality.md", "dx-components.md", "performance.md", "state
 
 Write-Host ""
 Write-Host "================================================" -ForegroundColor Cyan
-Write-Host "  DevExtreme Vue Skill — Setup" -ForegroundColor Cyan
+Write-Host "  DevExtreme Vue Skill - Setup" -ForegroundColor Cyan
 Write-Host "================================================" -ForegroundColor Cyan
 
-# ── Verificar que claude CLI este disponible ──────────────────────────────────
+# --- Verificar que claude CLI este disponible --------------------------------
 
 if (-not (Get-Command "claude" -ErrorAction SilentlyContinue)) {
     Write-Host ""
@@ -26,14 +26,14 @@ if (-not (Get-Command "claude" -ErrorAction SilentlyContinue)) {
     exit 1
 }
 
-# ── MCP de DevExtreme (scope global — disponible en todos los proyectos) ──────
+# --- MCP de DevExtreme (scope proyecto) --------------------------------------
 
 Write-Host ""
 Write-Host "[1/3] MCP de DevExtreme..." -ForegroundColor Yellow
 
 $mcpList = claude mcp list 2>&1
 if ($mcpList -match $MCP_NAME) {
-    Write-Host "      Ya instalado — sin cambios." -ForegroundColor Green
+    Write-Host "      Ya instalado - sin cambios." -ForegroundColor Green
 } else {
     Write-Host "      Instalando '$MCP_NAME'..."
     claude mcp add --scope project --transport http $MCP_NAME $MCP_URL 2>&1
@@ -45,14 +45,14 @@ if ($mcpList -match $MCP_NAME) {
     }
 }
 
-# ── Plugin vue3-devextreme ────────────────────────────────────────────────────
+# --- Plugin vue3-devextreme --------------------------------------------------
 
 Write-Host ""
 Write-Host "[2/3] Plugin '$PLUGIN_NAME'..." -ForegroundColor Yellow
 
 $pluginList = claude plugin list 2>&1
 if ($pluginList -match $PLUGIN_NAME) {
-    Write-Host "      Ya instalado — actualizando..."
+    Write-Host "      Ya instalado - actualizando..."
     claude plugin update $PLUGIN_NAME 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "      Actualizado a la ultima version." -ForegroundColor Green
@@ -78,7 +78,7 @@ if ($pluginList -match $PLUGIN_NAME) {
     }
 }
 
-# ── Reglas de desarrollo → .claude/rules/ del proyecto actual ────────────────
+# --- Reglas de desarrollo -> .claude/rules/ del proyecto actual --------------
 
 Write-Host ""
 Write-Host "[3/3] Reglas de desarrollo..." -ForegroundColor Yellow
@@ -95,7 +95,7 @@ foreach ($file in $RULES_FILES) {
         Invoke-WebRequest -Uri "$RULES_BASE/$file" -OutFile $dest -UseBasicParsing -ErrorAction Stop
         Write-Host "      $file" -ForegroundColor Green
     } catch {
-        Write-Host "      Error descargando $file`: $_" -ForegroundColor Red
+        Write-Host "      Error descargando ${file}: $_" -ForegroundColor Red
         $allOk = $false
     }
 }
@@ -107,7 +107,7 @@ if ($allOk) {
     Write-Host "      https://github.com/$PLUGIN_REPO/tree/master/rules" -ForegroundColor Gray
 }
 
-# ── Resumen ───────────────────────────────────────────────────────────────────
+# --- Resumen -----------------------------------------------------------------
 
 Write-Host ""
 Write-Host "================================================" -ForegroundColor Cyan
