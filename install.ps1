@@ -1,5 +1,6 @@
 # install.ps1
-# Instala o actualiza el MCP de DevExtreme y el plugin vue3-devextreme en Claude Code.
+# Instala o actualiza el MCP de DevExtreme, el plugin vue3-devextreme y las reglas
+# de desarrollo en el proyecto actual (.claude/rules/).
 # Ejecutar desde la raiz del proyecto donde se quiere usar el plugin:
 #   .\install.ps1
 
@@ -7,6 +8,9 @@ $MCP_NAME    = "dxdocs"
 $MCP_URL     = "https://api.devexpress.com/mcp/docs"
 $PLUGIN_NAME = "vue3-devextreme"
 $PLUGIN_REPO = "JulioGastonPita/devextreme-vue-skill"
+$RULES_BASE  = "https://raw.githubusercontent.com/$PLUGIN_REPO/master/rules"
+$RULES_DIR   = ".claude/rules"
+$RULES_FILES = @("code-quality.md", "dx-components.md", "performance.md", "state-and-data.md")
 
 Write-Host ""
 Write-Host "================================================" -ForegroundColor Cyan
@@ -25,7 +29,7 @@ if (-not (Get-Command "claude" -ErrorAction SilentlyContinue)) {
 # ── MCP de DevExtreme (scope global — disponible en todos los proyectos) ──────
 
 Write-Host ""
-Write-Host "[1/2] MCP de DevExtreme..." -ForegroundColor Yellow
+Write-Host "[1/3] MCP de DevExtreme..." -ForegroundColor Yellow
 
 $mcpList = claude mcp list 2>&1
 if ($mcpList -match $MCP_NAME) {
@@ -44,7 +48,7 @@ if ($mcpList -match $MCP_NAME) {
 # ── Plugin vue3-devextreme ────────────────────────────────────────────────────
 
 Write-Host ""
-Write-Host "[2/2] Plugin '$PLUGIN_NAME'..." -ForegroundColor Yellow
+Write-Host "[2/3] Plugin '$PLUGIN_NAME'..." -ForegroundColor Yellow
 
 $pluginList = claude plugin list 2>&1
 if ($pluginList -match $PLUGIN_NAME) {
@@ -72,6 +76,35 @@ if ($pluginList -match $PLUGIN_NAME) {
         Write-Host "      Error al instalar. Intentar manualmente:" -ForegroundColor Red
         Write-Host "      claude plugin install $PLUGIN_NAME" -ForegroundColor Gray
     }
+}
+
+# ── Reglas de desarrollo → .claude/rules/ del proyecto actual ────────────────
+
+Write-Host ""
+Write-Host "[3/3] Reglas de desarrollo..." -ForegroundColor Yellow
+
+if (-not (Test-Path $RULES_DIR)) {
+    New-Item -ItemType Directory -Force -Path $RULES_DIR | Out-Null
+    Write-Host "      Creado directorio '$RULES_DIR'."
+}
+
+$allOk = $true
+foreach ($file in $RULES_FILES) {
+    $dest = Join-Path $RULES_DIR $file
+    try {
+        Invoke-WebRequest -Uri "$RULES_BASE/$file" -OutFile $dest -UseBasicParsing -ErrorAction Stop
+        Write-Host "      $file" -ForegroundColor Green
+    } catch {
+        Write-Host "      Error descargando $file`: $_" -ForegroundColor Red
+        $allOk = $false
+    }
+}
+
+if ($allOk) {
+    Write-Host "      Reglas instaladas en '$RULES_DIR'." -ForegroundColor Green
+} else {
+    Write-Host "      Algunas reglas fallaron. Reintentar manualmente desde:" -ForegroundColor Yellow
+    Write-Host "      https://github.com/$PLUGIN_REPO/tree/master/rules" -ForegroundColor Gray
 }
 
 # ── Resumen ───────────────────────────────────────────────────────────────────
