@@ -3,6 +3,10 @@
   "name": "devextreme-vue-skill",
   "version": "1.0.0",
   "description": "Vue 3 + DevExtreme skills and patterns for Claude Code",
+  "owner": {
+    "name": "JulioGastonPita",
+    "url": "https://github.com/JulioGastonPita"
+  },
   "plugins": [
     {
       "name": "vue3-devextreme",
