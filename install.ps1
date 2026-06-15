@@ -69,7 +69,7 @@ if ($pluginList -match $PLUGIN_NAME) {
         exit 1
     }
     Write-Host "      Instalando plugin..."
-    claude plugin install $PLUGIN_NAME 2>&1
+    claude plugin install --scope project $PLUGIN_NAME 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "      Instalado correctamente." -ForegroundColor Green
     } else {
