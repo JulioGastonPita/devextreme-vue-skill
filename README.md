@@ -18,10 +18,10 @@ Instala el MCP de DevExtreme (scope global) y el plugin `vue3-devextreme`. Si ya
 
 ### Opción B — Manual
 
-**1. MCP de DevExtreme (una sola vez, global)**
+**1. MCP de DevExtreme (por proyecto — se guarda en `.mcp.json`)**
 
 ```bash
-claude mcp add --scope user --transport http dxdocs https://api.devexpress.com/mcp/docs
+claude mcp add --scope project --transport http dxdocs https://api.devexpress.com/mcp/docs
 ```
 
 **2. Registrar el marketplace y instalar el plugin**
