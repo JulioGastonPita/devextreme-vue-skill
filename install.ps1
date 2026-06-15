@@ -50,10 +50,10 @@ if ($mcpList -match $MCP_NAME) {
 Write-Host ""
 Write-Host "[2/3] Plugin '$PLUGIN_NAME'..." -ForegroundColor Yellow
 
-$pluginList = claude plugin list 2>&1
+$pluginList = claude plugin list --scope project 2>&1
 if ($pluginList -match $PLUGIN_NAME) {
     Write-Host "      Ya instalado - actualizando..."
-    claude plugin update $PLUGIN_NAME 2>&1
+    claude plugin update --scope project $PLUGIN_NAME 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "      Actualizado a la ultima version." -ForegroundColor Green
     } else {
