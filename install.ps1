@@ -1,13 +1,12 @@
 # install.ps1
-# Instala o actualiza el MCP de DevExtreme y el skill vue3-devextreme en Claude Code.
-# Ejecutar desde la raiz del proyecto donde se quiere usar el skill:
+# Instala o actualiza el MCP de DevExtreme y el plugin vue3-devextreme en Claude Code.
+# Ejecutar desde la raiz del proyecto donde se quiere usar el plugin:
 #   .\install.ps1
 
-$MCP_NAME   = "dxdocs"
-$MCP_URL    = "https://api.devexpress.com/mcp/docs"
-$SKILL_NAME = "vue3-devextreme"
-$SKILL_REPO = "JulioGastonPita/devextreme-vue-skill"
-$SKILL_PATH = "vue3-devextreme/SKILL.md"
+$MCP_NAME    = "dxdocs"
+$MCP_URL     = "https://api.devexpress.com/mcp/docs"
+$PLUGIN_NAME = "vue3-devextreme"
+$PLUGIN_REPO = "JulioGastonPita/devextreme-vue-skill"
 
 Write-Host ""
 Write-Host "================================================" -ForegroundColor Cyan
@@ -42,29 +41,36 @@ if ($mcpList -match $MCP_NAME) {
     }
 }
 
-# ── Skill vue3-devextreme (scope proyecto — ejecutar desde la raiz del proyecto)
+# ── Plugin vue3-devextreme ────────────────────────────────────────────────────
 
 Write-Host ""
-Write-Host "[2/2] Skill '$SKILL_NAME'..." -ForegroundColor Yellow
+Write-Host "[2/2] Plugin '$PLUGIN_NAME'..." -ForegroundColor Yellow
 
-$skillList = claude skills list 2>&1
-if ($skillList -match $SKILL_NAME) {
+$pluginList = claude plugin list 2>&1
+if ($pluginList -match $PLUGIN_NAME) {
     Write-Host "      Ya instalado — actualizando..."
-    claude skills update $SKILL_NAME 2>&1
+    claude plugin update $PLUGIN_NAME 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "      Actualizado a la ultima version." -ForegroundColor Green
     } else {
         Write-Host "      Error al actualizar. Intentar manualmente:" -ForegroundColor Red
-        Write-Host "      claude skills update $SKILL_NAME" -ForegroundColor Gray
+        Write-Host "      claude plugin update $PLUGIN_NAME" -ForegroundColor Gray
     }
 } else {
-    Write-Host "      Instalando desde GitHub..."
-    claude skills add $SKILL_REPO --skill-path $SKILL_PATH 2>&1
+    Write-Host "      Registrando marketplace..."
+    claude plugin marketplace add $PLUGIN_REPO 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "      Error al registrar marketplace. Verificar manualmente:" -ForegroundColor Red
+        Write-Host "      claude plugin marketplace add $PLUGIN_REPO" -ForegroundColor Gray
+        exit 1
+    }
+    Write-Host "      Instalando plugin..."
+    claude plugin install $PLUGIN_NAME 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "      Instalado correctamente." -ForegroundColor Green
     } else {
         Write-Host "      Error al instalar. Intentar manualmente:" -ForegroundColor Red
-        Write-Host "      claude skills add $SKILL_REPO --skill-path $SKILL_PATH" -ForegroundColor Gray
+        Write-Host "      claude plugin install $PLUGIN_NAME" -ForegroundColor Gray
     }
 }
 

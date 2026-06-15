@@ -1,0 +1,13 @@
+{
+  "name": "vue3-devextreme",
+  "version": "1.0.0",
+  "description": "Desarrollo enterprise con Vue 3, DevExtreme Vue, Pinia, TanStack Query y TypeScript",
+  "author": {
+    "name": "Julio Gaston Pita",
+    "email": "juliogastonpita@gmail.com",
+    "url": "https://github.com/JulioGastonPita"
+  },
+  "repository": "https://github.com/JulioGastonPita/devextreme-vue-skill",
+  "license": "MIT",
+  "keywords": ["vue3", "devextreme", "dx", "typescript", "pinia", "tanstack-query"]
+}

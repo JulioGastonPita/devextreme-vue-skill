@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "devextreme-vue-skill",
+  "version": "1.0.0",
+  "description": "Vue 3 + DevExtreme skills and patterns for Claude Code",
+  "plugins": [
+    {
+      "name": "vue3-devextreme",
+      "description": "Desarrollo enterprise con Vue 3, DevExtreme Vue, Pinia, TanStack Query y TypeScript",
+      "source": "./plugins/vue3-devextreme",
+      "category": "development"
+    }
+  ]
+}
